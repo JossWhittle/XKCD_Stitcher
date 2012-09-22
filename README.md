@@ -14,6 +14,11 @@ Randall, I am HUGE fan. Please don't sue me.
 	-o --outline : Do you want the outline on squares on by default. Can be toggled using the (O) key
 	-c --cross   : Do you want the crosshair on by default. Can be toggled using the (C) key
 	
+# Controls
+
+	Movement : WASD & Arrow Keys to pan
+	Zoom     : Ctrl (Zoom in) & Shift (Zoom out)
+
 # Screenshots
 
 ![Zoomed out a little](https://raw.github.com/L2Program/XKCD_Stitcher/master/screenshots/1.png)
