@@ -23,10 +23,14 @@ Randall, I am HUGE fan. Please don't sue me.
 
 # Screenshots
 
+Zoomed out a little
 ![Zoomed out a little](https://raw.github.com/L2Program/XKCD_Stitcher/master/screenshots/1.png)
 
+Fully zoomed out with outline turned on
 ![Fully zoomed out with outline turned on](https://raw.github.com/L2Program/XKCD_Stitcher/master/screenshots/2.png)
 
+One of my favorite bits
 ![One of my favorite bits](https://raw.github.com/L2Program/XKCD_Stitcher/master/screenshots/3.png)
 
+Another favorite
 ![Another favorite](https://raw.github.com/L2Program/XKCD_Stitcher/master/screenshots/4.png)
