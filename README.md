@@ -18,6 +18,7 @@ Randall, I am HUGE fan. Please don't sue me.
 
 	Movement : WASD & Arrow Keys to pan
 	Zoom     : Ctrl (Zoom in) & Shift (Zoom out)
+			 : (Z) will automatically (and smoothly) zoom you into 100%  
 	
 	Mouse controls coming soon!
 
