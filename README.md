@@ -18,6 +18,8 @@ Randall, I am HUGE fan. Please don't sue me.
 
 	Movement : WASD & Arrow Keys to pan
 	Zoom     : Ctrl (Zoom in) & Shift (Zoom out)
+	
+	Mouse controls coming soon!
 
 # Screenshots
 
