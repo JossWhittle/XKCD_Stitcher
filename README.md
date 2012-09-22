@@ -13,6 +13,9 @@ Randall, I am HUGE fan. Please don't sue me.
 	-r --rebuild : Tells the program to rebuild the resize cache based on the given image directory
 	-o --outline : Do you want the outline on squares on by default. Can be toggled using the (O) key
 	-c --cross   : Do you want the crosshair on by default. Can be toggled using the (C) key
+
+	Example usage:
+	java Stitch -p "C:\xkcd_images" -r
 	
 # Controls
 
