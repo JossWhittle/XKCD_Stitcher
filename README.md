@@ -37,7 +37,7 @@ Some of the code here might be a little "hack & slash", I tried to keep it as cl
 	curl "http://imgs.xkcd.com/clickdrag/[1-20]n[1-50]w.png" -o "#1n#2w.png"
 	curl "http://imgs.xkcd.com/clickdrag/[1-20]s[1-50]w.png" -o "#1s#2w.png"
 	
-	Then I ordered the filed by Size (asc) and deleted all the empty/corrupt files
+	Then I ordered the files by Size (asc) and deleted all the empty/corrupt files
 
 # Screenshots
 
