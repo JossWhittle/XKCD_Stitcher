@@ -100,10 +100,11 @@ public class Game extends GPanel {
 		
 		m_rendered = 0;
 		
+		float x = (m_x*TILE_W), y = (m_y*TILE_H);
+		
 		for (int i = 0; i < m_tiles.size(); i++) {
 			Tile t = m_tiles.get(i);
-			t.translate((m_x*TILE_W),(m_y*TILE_H));
-			t.setScale(m_scale);
+			t.update(x,y, m_scale);
 			
 			if ((t.getLeft() < (WIDTH / 2.0f) && t.getRight() >= -(WIDTH / 2.0f)) && (t.getTop() < (HEIGHT / 2.0f) && t.getBottom() >= -(HEIGHT / 2.0f))) {
 				t.load();

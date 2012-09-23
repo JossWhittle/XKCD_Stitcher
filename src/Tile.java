@@ -13,7 +13,7 @@ public class Tile extends DrawableImage {
 	// Members
 	private BufferedImage[] CACHE;
 	
-	private float m_scale = 1.0f, m_dx = 0, m_dy = 0;
+	private float m_scale = 1.0f, m_dx = 0, m_dy = 0, m_left = 0, m_right = 0, m_top = 0, m_bottom = 0, m_sw = 0, m_sh = 0;
 	private boolean m_loaded = false;
 	private int m_image = TILE_2048, m_u, m_v;
 	
@@ -70,10 +70,6 @@ public class Tile extends DrawableImage {
 		m_loaded = false;
 	}
 	
-	public void print() {
-		
-	}
-	
 	public int getU() {
 		return m_u;
 	}
@@ -82,50 +78,60 @@ public class Tile extends DrawableImage {
 		return m_v;
 	}
 	
-	public void translate(float dx, float dy) {
+	public void update(float dx, float dy, float scale) {
 		m_dx = dx;
 		m_dy = dy;
+		m_scale = scale;
+		
+		m_sw = (m_w * m_scale);
+		m_sh = (m_h * m_scale);
+		
+		m_left = (m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale);
+		m_right = ((m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale)) + (m_w * m_scale);
+		m_top = (m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale);
+		m_bottom = ((m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale)) + (m_h * m_scale);
 	}
 	
 	public float getLeft() {
-		return (m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale);
+		return m_left;
 	}
 	
 	public float getRight() {
-		return ((m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale)) + (m_w * m_scale);
+		return m_right;
 	}
 	
 	public float getTop() {
-		return (m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale);
+		return m_top;
 	}
 	
 	public float getBottom() {
-		return ((m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale)) + (m_h * m_scale);
-	}
-	
-	public void setScale(float v) {
-		m_scale = v;
+		return m_bottom;
 	}
 	
 	public float getSWidth() {
-		return m_w * m_scale;
+		return m_sw;
 	}
 	
 	public float getSHeight() {
-		return m_h * m_scale;
+		return m_sh;
 	}
 	
 	protected void drawContent(Graphics2D g) {
 		
-		g.drawImage(getImg(), (int) Math.floor((m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale) + (Stitch.RES_WIDTH / 2.0f)), (int) Math.floor((m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale) + (Stitch.RES_HEIGHT / 2.0f)), (int) Math.ceil((m_w + 1) * m_scale),
-				(int) Math.ceil((m_h + 1) * m_scale), null);
-		
-		//g.setColor(Color.GREEN);
-		//g.drawString("Tile " + (m_v>=0?(m_v+1)+"s":-m_v+"n")+(m_u>=0?(m_u+1)+"e":-m_u+"w"),(int) ((m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale)), (int) ((m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale)));
+		g.drawImage(
+				getImg(), 
+				(int) Math.floor(m_left + (Stitch.RES_WIDTH / 2.0f)), 
+				(int) Math.floor(m_top + (Stitch.RES_HEIGHT / 2.0f)), 
+				(int) Math.ceil((m_w + 1) * m_scale),
+				(int) Math.ceil((m_h + 1) * m_scale), 
+				null);
 		
 		if (Stitch.OUTLINE) {
 			g.setColor(COLOURS[m_image]);
-			g.drawRect((int) Math.floor((m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale) + (Stitch.RES_WIDTH / 2.0f)), (int) Math.floor((m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale) + (Stitch.RES_HEIGHT / 2.0f)), (int) Math.ceil((m_w + 1) * m_scale),
+			g.drawRect(
+					(int) Math.floor(m_left + (Stitch.RES_WIDTH / 2.0f)), 
+					(int) Math.floor(m_top + (Stitch.RES_HEIGHT / 2.0f)), 
+					(int) Math.ceil((m_w + 1) * m_scale),
 					(int) Math.ceil((m_h + 1) * m_scale));
 		}
 		
