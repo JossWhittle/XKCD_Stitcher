@@ -23,14 +23,16 @@ public class Game extends GPanel implements MouseWheelListener {
 	
 	private static int[][] TILES;
 	
-	private static final float TILE_W = 2048, TILE_H = 2048, SPEED = 0.5f, SCALE_SPEED = 0.05f, SPEED_OUT = 0.45f, SPEED_IN = 0.01f;
+	private static final float TILE_W = 2048, TILE_H = 2048, SPEED = 0.5f, SCALE_SPEED = 0.05f, SPEED_OUT = 0.45f, SPEED_IN = 0.01f, ZOOM_D = 500;
 	
 	// Members
 	private boolean SPRINT = false, FORWARD = false, BACK = false, LEFT = false, RIGHT = false, CTRL = false, SHIFT = false, ZOOM = false, UPDATED = false;
 	private int MOUSE_X = 50, MOUSE_Y = 0, m_rendered = 0,m_rx = 0, m_ry = 0, m_zt = 0;
 	
 	private ArrayList<Tile> m_tiles;
-	private float m_x = -1, m_y = 3, m_scale = 0.05f, m_zs = 0, o_x = 0, o_y = 0, o_scale = 0;
+	private Tile m_selected = null;
+	private float m_x = -1, m_y = 3, m_scale = 0.05f, m_zs = 0, o_x = 0, o_y = 0, o_scale = 0, m_zxs = 0, m_zxt = 0, m_zys = 0, m_zyt = 0, m_zst = 0;
+	private String m_sel = "";
 	
 	public Game() {
 		init();
@@ -55,10 +57,14 @@ public class Game extends GPanel implements MouseWheelListener {
 		
 		if (ZOOM) {
 			m_zt += timePassed;
-			m_scale = Ease.quintInOut(m_zt, m_zs, 1-m_zs, 2000);
+			m_scale = Ease.linear(m_zt, m_zs, m_zst-m_zs, ZOOM_D);
+			m_x = (Ease.linear(m_zt, m_zxs, m_zxt-m_zxs, ZOOM_D));
+			m_y = (Ease.linear(m_zt, m_zys, m_zyt-m_zys, ZOOM_D));
 			
-			if (m_scale >= 1) {
-				m_scale = 1;
+			if (m_zt >= ZOOM_D) {
+				m_scale = m_zst;
+				m_x = m_zxt;
+				m_y = m_zyt;
 				ZOOM = false;
 			}
 		}
@@ -109,6 +115,8 @@ public class Game extends GPanel implements MouseWheelListener {
 		}
 		
 		m_rendered = 0;
+		m_sel = "";
+		m_selected = null;
 		
 		float x = (m_x*TILE_W), y = (m_y*TILE_H);
 		
@@ -126,6 +134,11 @@ public class Game extends GPanel implements MouseWheelListener {
 				} else {
 					t.unload();
 				}
+				
+				if (t.intesect(MOUSE_X, MOUSE_Y)) {
+					m_sel = Stitch.uvCoord(t.getU(),t.getV());
+					m_selected = t;
+				}
 			}
 			
 			m_rx = (int) Math.max((int) ((int)(WIDTH / (TILE_W * (m_scale))) * TILE_W), TILE_W);
@@ -136,6 +149,14 @@ public class Game extends GPanel implements MouseWheelListener {
 			o_scale = m_scale;
 		} else {
 			UPDATED = false;
+			
+			for (int i = 0; i < m_tiles.size(); i++) {
+				Tile t = m_tiles.get(i);
+				if (t.intesect(MOUSE_X, MOUSE_Y)) {
+					m_sel = Stitch.uvCoord(t.getU(),t.getV());
+					m_selected = t;
+				}
+			}
 		}
 		
 		//System.out.println(c);
@@ -173,6 +194,7 @@ public class Game extends GPanel implements MouseWheelListener {
 		g.drawString("CACHE: " + (Stitch.CACHE > 0 ? "ON" : "OFF"), FPS_X, FPS_Y + 120);
 		g.drawString("Tile Width: " + m_tiles.get(0).getSWidth(), FPS_X, FPS_Y + 140);
 		g.drawString("Updated: " + UPDATED, FPS_X, FPS_Y + 160);
+		g.drawString("Selected: " + m_sel, FPS_X, FPS_Y + 180);
 		
 	}
 	
@@ -213,6 +235,11 @@ public class Game extends GPanel implements MouseWheelListener {
 			ZOOM = true;
 			m_zt = 0;
 			m_zs = m_scale;
+			m_zst = 1f;
+			m_zxs = m_x;
+			m_zys = m_y;
+			m_zxt = m_x;
+			m_zyt = m_y;
 		}
 	}
 
@@ -242,6 +269,19 @@ public class Game extends GPanel implements MouseWheelListener {
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
 			SHIFT = true;
 			ZOOM = false;
+		}
+	}
+	
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 2) {
+			ZOOM = true;
+			m_zt = 0;
+			m_zs = m_scale;
+			m_zst = 1f;
+			m_zxs = m_x;
+			m_zys = m_y;
+			m_zxt = -(m_selected.getU() + ((MOUSE_X - (m_selected.getLeft() + (WIDTH / 2.0f))) / m_selected.getSWidth()));
+			m_zyt = -(m_selected.getV() + ((MOUSE_Y - (m_selected.getTop() + (HEIGHT / 2.0f))) / m_selected.getSHeight()));
 		}
 	}
 	

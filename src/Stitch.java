@@ -87,6 +87,10 @@ public class Stitch {
 	
 	public static final int[] TILES = {2048,512,64,16};
 	public static String getURL(int u, int v, int s) {
-		return DIR + "\\" + (s > 0 ? "small\\" + TILES[s] + "\\" : "") + (v>=0?(v+1)+"s":-v+"n")+(u>=0?(u+1)+"e":-u+"w") + ".png";
+		return DIR + "\\" + (s > 0 ? "small\\" + TILES[s] + "\\" : "") + uvCoord(u,v) + ".png";
+	}
+	
+	public static String uvCoord(int u, int v) {
+		return ""+(v>=0?(v+1)+"s":-v+"n")+(u>=0?(u+1)+"e":-u+"w");
 	}
 }

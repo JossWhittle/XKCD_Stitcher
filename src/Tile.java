@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 
@@ -14,7 +15,7 @@ public class Tile extends DrawableImage {
 	private BufferedImage[] CACHE;
 	
 	private float m_scale = 1.0f, m_dx = 0, m_dy = 0, m_left = 0, m_right = 0, m_top = 0, m_bottom = 0, m_sw = 0, m_sh = 0;
-	private boolean m_loaded = false;
+	private boolean m_loaded = false, m_hover = false;
 	private int m_image = TILE_2048, m_u, m_v;
 	
 	public Tile(int u, int v, float x, float y, float w, float h) {
@@ -116,6 +117,11 @@ public class Tile extends DrawableImage {
 		return m_sh;
 	}
 	
+	public boolean intesect(float x, float y) {
+		m_hover = new Rectangle.Float(m_left + (Stitch.RES_WIDTH / 2.0f),m_top + (Stitch.RES_HEIGHT / 2.0f),m_sw,m_sh).contains(x, y);
+		return m_hover;
+	}
+	
 	protected void drawContent(Graphics2D g) {
 		
 		if (m_loaded) {
@@ -128,8 +134,10 @@ public class Tile extends DrawableImage {
 					null);
 		}
 		
-		if (Stitch.OUTLINE) {
-			if (m_loaded) {
+		if (Stitch.OUTLINE || m_hover) {
+			if (m_hover) {
+				g.setColor(Color.lightGray);
+			} else if (m_loaded) {
 				g.setColor(COLOURS[m_image]);
 			} else {
 				g.setColor(Color.pink);
@@ -137,8 +145,8 @@ public class Tile extends DrawableImage {
 			g.drawRect(
 					(int) Math.floor(m_left + (Stitch.RES_WIDTH / 2.0f)), 
 					(int) Math.floor(m_top + (Stitch.RES_HEIGHT / 2.0f)), 
-					(int) Math.ceil((m_w + 1) * m_scale),
-					(int) Math.ceil((m_h + 1) * m_scale));
+					(int) Math.floor(m_sw)-(m_hover ? 1 : 0),
+					(int) Math.floor(m_sh)-(m_hover ? 1 : 0));
 		}
 		
 	}
