@@ -36,8 +36,6 @@ public class Game extends GPanel implements MouseWheelListener {
 		init();
 		addMouseWheelListener(this);
 
-		//TILES = Loader.getTiles();
-		
 		m_tiles = new ArrayList<Tile>();
 		for (int v = -20; v < 20; v++) {
 			for (int u = -50; u < 50; u++) {
