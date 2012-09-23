@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
  * @author Joss
  * 
  */
-public class Game extends GPanel {
+public class Game extends GPanel implements MouseWheelListener {
 
 	// Constants
 	private static final Color FLOOR = Color.BLACK, CEILING = Color.WHITE; // new Color(13,10,10)
@@ -28,10 +30,11 @@ public class Game extends GPanel {
 	private int MOUSE_X = 50, MOUSE_Y = 0, m_rendered = 0,m_rx = 0, m_ry = 0, m_zt = 0;
 	
 	private ArrayList<Tile> m_tiles;
-	private float m_x = -1, m_y = 3, m_scale = 0.3f, m_zs = 0;
+	private float m_x = -1, m_y = 3, m_scale = 0.05f, m_zs = 0;
 	
 	public Game() {
 		init();
+		addMouseWheelListener(this);
 
 		//TILES = Loader.getTiles();
 		
@@ -42,7 +45,7 @@ public class Game extends GPanel {
 				int y = (v * 2048);
 				
 				if (new File(Stitch.getURL(u,v,0)).exists()) {
-					m_tiles.add(new Tile(u,v,x,y,2049,2049));
+					m_tiles.add(new Tile(u,v,x,y,2048,2048));
 				}
 			}
 		}
@@ -62,11 +65,13 @@ public class Game extends GPanel {
 			}
 		}
 		
-		if (CTRL) {
-			ds -= SCALE_SPEED;
+		if (CTRL || SCROLL_Y > 0) {
+			ds -= SCALE_SPEED * (SCROLL_Y != 0 ? 2 : 1);
+			SCROLL_Y = 0;
 		}
-		if (SHIFT) {
-			ds += SCALE_SPEED;
+		if (SHIFT || SCROLL_Y < 0) {
+			ds += SCALE_SPEED * (SCROLL_Y != 0 ? 2 : 1);
+			SCROLL_Y = 0;
 		}
 		
 		m_scale *= ds;
@@ -96,7 +101,14 @@ public class Game extends GPanel {
 		m_x += dx;
 		m_y += dy;
 		
-		//System.out.println(sx + ", " + sy + ", " + sx2 + ", " + sy2);
+		if (LEFT_MOUSE) {
+			m_x += (MOUSE_DX / TILE_W) / m_scale;
+			m_y += (MOUSE_DY / TILE_H) / m_scale;
+			MOUSE_SX = MOUSE_X;
+			MOUSE_SY = MOUSE_Y;
+			MOUSE_DX = 0;
+			MOUSE_DY = 0;
+		}
 		
 		m_rendered = 0;
 		
@@ -104,13 +116,12 @@ public class Game extends GPanel {
 		
 		for (int i = 0; i < m_tiles.size(); i++) {
 			Tile t = m_tiles.get(i);
+	
 			t.update(x,y, m_scale);
-			
+						
 			if ((t.getLeft() < (WIDTH / 2.0f) && t.getRight() >= -(WIDTH / 2.0f)) && (t.getTop() < (HEIGHT / 2.0f) && t.getBottom() >= -(HEIGHT / 2.0f))) {
 				t.load();
-				//t.print();
 				m_rendered++;
-				
 			} else {
 				t.unload();
 			}
@@ -226,22 +237,31 @@ public class Game extends GPanel {
 	}
 	
 	private boolean LEFT_MOUSE = false;
+	private float MOUSE_DX = 0, MOUSE_DY = 0, MOUSE_SX = 0, MOUSE_SY = 0;
 	public void mousePressed(MouseEvent e) {
 		LEFT_MOUSE = true;
+		MOUSE_SX = e.getX();
+		MOUSE_SY = e.getY();
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		LEFT_MOUSE = false;
 	}
 
-	private float MOUSE_MENU_X = 0, MOUSE_MENU_Y = 0;
 	public void mouseDragged(MouseEvent e) {
 		mouseMoved(e);
+		MOUSE_DX = MOUSE_X - MOUSE_SX; 
+		MOUSE_DY = MOUSE_Y - MOUSE_SY;
 	}
 
 	public void mouseMoved(MouseEvent e) {
 		MOUSE_X = e.getX();
 		MOUSE_Y = e.getY();
+	}
+
+	private int SCROLL_Y = 0;
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		SCROLL_Y = e.getWheelRotation();
 	}
 
 }

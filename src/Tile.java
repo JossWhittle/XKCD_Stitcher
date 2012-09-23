@@ -86,10 +86,10 @@ public class Tile extends DrawableImage {
 		m_sw = (m_w * m_scale);
 		m_sh = (m_h * m_scale);
 		
-		m_left = (m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale);
-		m_right = ((m_x * m_scale) - (m_ox * m_scale) + (m_dx * m_scale)) + (m_w * m_scale);
-		m_top = (m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale);
-		m_bottom = ((m_y * m_scale) - (m_oy * m_scale) + (m_dy * m_scale)) + (m_h * m_scale);
+		m_left = (m_x * m_scale) + (m_dx * m_scale);
+		m_right = (m_left) + (m_sw);
+		m_top = (m_y * m_scale) + (m_dy * m_scale);
+		m_bottom = (m_top) + (m_sh);
 	}
 	
 	public float getLeft() {
@@ -118,16 +118,22 @@ public class Tile extends DrawableImage {
 	
 	protected void drawContent(Graphics2D g) {
 		
-		g.drawImage(
-				getImg(), 
-				(int) Math.floor(m_left + (Stitch.RES_WIDTH / 2.0f)), 
-				(int) Math.floor(m_top + (Stitch.RES_HEIGHT / 2.0f)), 
-				(int) Math.ceil((m_w + 1) * m_scale),
-				(int) Math.ceil((m_h + 1) * m_scale), 
-				null);
+		if (m_loaded) {
+			g.drawImage(
+					getImg(), 
+					(int) Math.floor(m_left + (Stitch.RES_WIDTH / 2.0f)), 
+					(int) Math.floor(m_top + (Stitch.RES_HEIGHT / 2.0f)), 
+					(int) Math.ceil((m_w + 1) * m_scale),
+					(int) Math.ceil((m_h + 1) * m_scale), 
+					null);
+		}
 		
 		if (Stitch.OUTLINE) {
-			g.setColor(COLOURS[m_image]);
+			if (m_loaded) {
+				g.setColor(COLOURS[m_image]);
+			} else {
+				g.setColor(Color.pink);
+			}
 			g.drawRect(
 					(int) Math.floor(m_left + (Stitch.RES_WIDTH / 2.0f)), 
 					(int) Math.floor(m_top + (Stitch.RES_HEIGHT / 2.0f)), 
