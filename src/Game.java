@@ -26,11 +26,11 @@ public class Game extends GPanel implements MouseWheelListener {
 	private static final float TILE_W = 2048, TILE_H = 2048, SPEED = 0.5f, SCALE_SPEED = 0.05f, SPEED_OUT = 0.45f, SPEED_IN = 0.01f;
 	
 	// Members
-	private boolean SPRINT = false, FORWARD = false, BACK = false, LEFT = false, RIGHT = false, CTRL = false, SHIFT = false, ZOOM = false;
+	private boolean SPRINT = false, FORWARD = false, BACK = false, LEFT = false, RIGHT = false, CTRL = false, SHIFT = false, ZOOM = false, UPDATED = false;
 	private int MOUSE_X = 50, MOUSE_Y = 0, m_rendered = 0,m_rx = 0, m_ry = 0, m_zt = 0;
 	
 	private ArrayList<Tile> m_tiles;
-	private float m_x = -1, m_y = 3, m_scale = 0.05f, m_zs = 0;
+	private float m_x = -1, m_y = 3, m_scale = 0.05f, m_zs = 0, o_x = 0, o_y = 0, o_scale = 0;
 	
 	public Game() {
 		init();
@@ -114,21 +114,31 @@ public class Game extends GPanel implements MouseWheelListener {
 		
 		float x = (m_x*TILE_W), y = (m_y*TILE_H);
 		
-		for (int i = 0; i < m_tiles.size(); i++) {
-			Tile t = m_tiles.get(i);
-	
-			t.update(x,y, m_scale);
-						
-			if ((t.getLeft() < (WIDTH / 2.0f) && t.getRight() >= -(WIDTH / 2.0f)) && (t.getTop() < (HEIGHT / 2.0f) && t.getBottom() >= -(HEIGHT / 2.0f))) {
-				t.load();
-				m_rendered++;
-			} else {
-				t.unload();
-			}
-		}
+		if (x != o_x || y != o_y || m_scale != o_scale) {
+			UPDATED = true;
+			
+			for (int i = 0; i < m_tiles.size(); i++) {
+				Tile t = m_tiles.get(i);
 		
-		m_rx = (int) Math.max((int) ((int)(WIDTH / (TILE_W * (m_scale))) * TILE_W), TILE_W);
-		m_ry = (int) Math.max((int) ((int)(HEIGHT / (TILE_H * (m_scale))) * TILE_H), TILE_H);
+				t.update(x,y, m_scale);
+							
+				if ((t.getLeft() < (WIDTH / 2.0f) && t.getRight() >= -(WIDTH / 2.0f)) && (t.getTop() < (HEIGHT / 2.0f) && t.getBottom() >= -(HEIGHT / 2.0f))) {
+					t.load();
+					m_rendered++;
+				} else {
+					t.unload();
+				}
+			}
+			
+			m_rx = (int) Math.max((int) ((int)(WIDTH / (TILE_W * (m_scale))) * TILE_W), TILE_W);
+			m_ry = (int) Math.max((int) ((int)(HEIGHT / (TILE_H * (m_scale))) * TILE_H), TILE_H);
+			
+			o_x = x;
+			o_y = y;
+			o_scale = m_scale;
+		} else {
+			UPDATED = false;
+		}
 		
 		//System.out.println(c);
  		
@@ -164,6 +174,7 @@ public class Game extends GPanel implements MouseWheelListener {
 		g.drawString("Crosshair (C): " + (Stitch.CROSS ? "ON" : "OFF"), FPS_X, FPS_Y + 100);
 		g.drawString("CACHE: " + (Stitch.CACHE > 0 ? "ON" : "OFF"), FPS_X, FPS_Y + 120);
 		g.drawString("Tile Width: " + m_tiles.get(0).getSWidth(), FPS_X, FPS_Y + 140);
+		g.drawString("Updated: " + UPDATED, FPS_X, FPS_Y + 160);
 		
 	}
 	
