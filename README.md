@@ -27,7 +27,7 @@ Randall, I am HUGE fan. Please don't sue me.
 	-4 --640		: 640x480 (This is default is no resolution flag is given)
 
 	Example usage:
-	java Stitch -p "C:\xkcd_images" -2 -r -l 3
+	java Stitch -p "C:\xkcd_images" --1280 -r -l 3
 	
 # Controls
 
