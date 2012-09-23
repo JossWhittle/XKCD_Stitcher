@@ -9,13 +9,25 @@ Randall, I am HUGE fan. Please don't sue me.
 
 # Usage
 
-	-p --path    : The path to the folder containing the image tiles
-	-r --rebuild : Tells the program to rebuild the resize cache based on the given image directory
-	-o --outline : Do you want the outline on squares on by default. Can be toggled using the (O) key
-	-c --cross   : Do you want the crosshair on by default. Can be toggled using the (C) key
+	-p --path [dir] : The path to the folder containing the image tiles
+	-r --rebuild    : Tells the program to rebuild the resize cache based on the given image directory
+	-o --outline    : Do you want the outline on squares on by default. Can be toggled using the (O) key
+	-c --cross      : Do you want the crosshair on by default. Can be toggled using the (C) key
+	
+	-l --load [1-4] : Tells the program to pre-load and cache tiles to speed up rendering
+					: This gives a performance boost at the cost of a lot of memory
+					: 1 = Caching of 16px textures
+					: 2 = 64px
+					: 3 = 512px (This is a really good setting on a high-spec system)
+					: 4 = 2048px (Not recommended!)
+					
+	-1 --1920		: Sets the resolution to 1920x1080 (windowed)
+	-2 --1280		: 1280x720
+	-3 --800		: 800x600
+	-4 --640		: 640x480 (This is default is no resolution flag is given)
 
 	Example usage:
-	java Stitch -p "C:\xkcd_images" -r
+	java Stitch -p "C:\xkcd_images" -2 -r -l 3
 	
 # Controls
 
