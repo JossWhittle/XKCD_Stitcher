@@ -150,6 +150,9 @@ public class Game extends GPanel {
 		g.drawString("Zoom: " + (int)(m_scale * 100) + "%", FPS_X, FPS_Y + 60);
 		g.drawString("Outline (O): " + (Stitch.OUTLINE ? "ON" : "OFF"), FPS_X, FPS_Y + 80);
 		g.drawString("Crosshair (C): " + (Stitch.CROSS ? "ON" : "OFF"), FPS_X, FPS_Y + 100);
+		g.drawString("CACHE: " + (Stitch.CACHE > 0 ? "ON" : "OFF"), FPS_X, FPS_Y + 120);
+		g.drawString("Tile Width: " + m_tiles.get(0).getSWidth(), FPS_X, FPS_Y + 140);
+		
 	}
 	
 	/*
