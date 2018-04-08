@@ -5,8 +5,6 @@ The reason I have included the copies of the original images that I downloaded (
 
 The modified images stored within the sub-directories aforementioned are simply resized versions of the original artwork, used to speed up rendering.
 
-Randall, I am HUGE fan. Please don't sue me.
-
 # Usage
 
 	-p --path [dir] : The path to the folder containing the image tiles
@@ -39,7 +37,7 @@ Randall, I am HUGE fan. Please don't sue me.
 			 : Scroll to Zoom 
 
 ## Just a note
-Some of the code here might be a little "hack & slash", I tried to keep it as clean and proper as possible but given this project was A. Just for fun, and B. Mainly built by taking files from my Aliens/Pacman Game and re-tooling them, I hope you can see how there may be one or two things which aren't quite kosher. 
+Some of the code here might be a little "hack & slash", I tried to keep it as clean and proper as possible but given this project was A. Just for fun, and B. Mainly built by taking files from my Aliens/Pacman Game and re-tooling them. 
 
 ## Additionally on how I acquired the images...
 
